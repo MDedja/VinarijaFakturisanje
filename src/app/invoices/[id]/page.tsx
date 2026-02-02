@@ -22,7 +22,32 @@ export default function InvoiceDetailPage() {
   const [invoice, setInvoice] = useState<(Invoice & { items: InvoiceItem[] }) | null>(null);
   const [company, setCompany] = useState<CompanySettings | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sendingEmail, setSendingEmail] = useState(false);
   const supabase = createClient();
+
+  const handleSendEmail = async () => {
+    if (!invoice) return;
+
+    setSendingEmail(true);
+    try {
+      const response = await fetch(`/api/invoices/${invoice.id}/email`, {
+        method: 'POST',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message);
+      } else {
+        alert(data.error || 'Greska pri slanju emaila');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Greska pri slanju emaila');
+    } finally {
+      setSendingEmail(false);
+    }
+  };
 
   useEffect(() => {
     async function loadData() {
@@ -102,8 +127,11 @@ export default function InvoiceDetailPage() {
             <Button variant="secondary">Izmeni</Button>
           </Link>
           <Link href={`/api/invoices/${invoice.id}/pdf`} target="_blank">
-            <Button>Preuzmi PDF</Button>
+            <Button variant="secondary">Preuzmi PDF</Button>
           </Link>
+          <Button onClick={handleSendEmail} disabled={sendingEmail}>
+            {sendingEmail ? 'Slanje...' : 'Posalji na email'}
+          </Button>
         </div>
       </div>
 
