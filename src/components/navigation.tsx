@@ -5,11 +5,12 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from './auth-provider';
 
 const navItems = [
-  { href: '/', label: 'Početna' },
+  { href: '/', label: 'Pocetna' },
   { href: '/invoices', label: 'Fakture' },
   { href: '/clients', label: 'Klijenti' },
   { href: '/products', label: 'Proizvodi' },
-  { href: '/settings', label: 'Podešavanja' },
+  { href: '/reports', label: 'Izvestaji' },
+  { href: '/settings', label: 'Podesavanja' },
 ];
 
 export function Navigation() {
