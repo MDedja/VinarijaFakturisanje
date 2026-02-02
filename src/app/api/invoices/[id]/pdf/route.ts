@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import React from 'react';
+import type { ReactElement } from 'react';
 import { renderToBuffer } from '@react-pdf/renderer';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { InvoicePDF } from '@/components/invoice-pdf';
@@ -48,7 +48,7 @@ export async function GET(
 
     // Generate PDF
     const pdfBuffer = await renderToBuffer(
-      React.createElement(InvoicePDF, { invoice, company })
+      InvoicePDF({ invoice, company }) as ReactElement
     );
 
     // Create filename
